@@ -1,42 +1,67 @@
-// filterLogic.js
+// src/components/Filter/filterLogic.js
 
-export function filterData(data, filters) {
-  return Object.entries(data).reduce((acc, [subjectId, subjectData]) => {
-    // Determine computed values
-    const site = subjectId.startsWith('9') ? 'NE' : 'UI';
-    const study = subjectId.startsWith('7') ? 'obs' : 'int';
+let parsedData = null;
+let flatItems = [];
 
-    // Check site and study filters
-    if (filters.site && filters.site !== site) return acc;
-    if (filters.study && filters.study !== study) return acc;
+/**
+ * Flattens nested data.json structure
+ */
+function flattenData(nested) {
+  return Object.entries(nested).flatMap(([subjectId, subj]) =>
+    Object.entries(subj.tasks).map(([taskName, task]) => ({
+      subjectId,
+      taskName,
+      date: task.date,
+      png_paths: Array.isArray(task.png_paths) ? task.png_paths : [],
+      session: subj.site ?? '',
+      category: task.category ?? ''
+    }))
+  );
+}
 
-    // Filter tasks
-    const filteredTasks = Object.entries(subjectData.tasks).filter(
-      ([taskKey, taskVal]) => {
-        // Task prefix filtering
-        if (filters.task) {
-          const taskPrefix = taskKey.split('_')[0];
-          if (taskPrefix !== filters.task) return false;
-        }
+/**
+ * Call this once before using filterData
+ */
+export async function initFilterData() {
+  const res = await fetch('/data/data.json');
+  parsedData = await res.json();
+  flatItems = flattenData(parsedData);
+}
 
-        // Category filtering
-        if (filters.category && taskVal.category !== filters.category) {
-          return false;
-        }
+/**
+ * Filters the pre-loaded flatItems
+ * @param {{site?: string, study?: string, task?: string, category?: string}} filters
+ * @returns Array of filtered task objects
+ */
+export function filterData(filters) {
+  if (!flatItems.length) {
+    console.warn('filterData called before initFilterData');
+    return [];
+  }
 
-        return true;
-      }
-    );
+  return flatItems.filter(item => {
+    const site  = item.subjectId.startsWith('9') ? 'NE' : 'UI';
+    const study = item.subjectId.startsWith('7') ? 'obs' : 'int';
 
-    if (filteredTasks.length > 0) {
-      acc[subjectId] = {
-        ...subjectData,
-        site,
-        project: study,
-        tasks: Object.fromEntries(filteredTasks),
-      };
+    if (filters.site && filters.site !== site) return false;
+    if (filters.study && filters.study !== study) return false;
+
+    if (filters.task) {
+      const prefix = item.taskName.split('_')[0];
+      if (prefix !== filters.task) return false;
     }
 
-    return acc;
-  }, {});
+    if (filters.category && item.category !== filters.category) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+/**
+ * Returns all flattened items (if needed for full view)
+ */
+export function getAllItems() {
+  return flatItems;
 }

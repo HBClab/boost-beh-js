@@ -1,91 +1,111 @@
-// EXAMPLE USAGE OF filterLogic:
-import { filterData } from './filterLogic';
-import fullData from './data/data.json';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate }                      from 'react-router-dom';
+import { initFilterData, filterData }       from './filterLogic';
+import './Filter.css';
 
-const filters = {
-  site: 'NE',
-  task: 'AF',
-  category: '1',
-};
+const TASK_OPTIONS  = ['AF', 'ATS', 'DSST', 'DWL', 'FN', 'LC', 'NF', 'NNB', 'NTS', 'PC', 'SM', 'VNB', 'WL'];
+const SITE_OPTIONS  = ['NE', 'UI'];
+const STUDY_OPTIONS = ['obs', 'int'];
 
-const filtered = filterData(fullData, filters);
+export default function Filter({ onClose }) {
+  const initialFilters = { site:'', study:'', task:'', category:'' };
+  const [filters, setFilters] = useState(initialFilters);
+  const [ready,   setReady]   = useState(false);
+  const popupRef             = useRef(null);
+  const navigate             = useNavigate();
 
-const [filters, setFilters] = useState({ site: "", task: "", category: "" });
+  // 1) load & flatten JSON once
+  useEffect(() => {
+    initFilterData()
+      .then(() => setReady(true))
+      .catch(err => console.error('Filter init failed:', err));
+  }, []);
 
-useEffect(() => {
-  function handleClickOutside(e) {
-    if (popupRef.current && !popupRef.current.contains(e.target)) {
-      setShowPopup(false);
-    }
-  }
-
-  document.addEventListener("mousedown", handleClickOutside);
-  return () => document.removeEventListener("mousedown", handleClickOutside);
-}, []);
-
-
-import React, { useState } from 'react';
-
-export default function Filter({ onApply, onClose }) {
-  const [f, setF] = useState({
-    site:     '',
-    study:    '',
-    task:     '',
-    category: ''
-  });
+  // 2) click-outside to close
+  useEffect(() => {
+    const onClickOutside = e => {
+      if (popupRef.current && !popupRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
+  }, [onClose]);
 
   const handleChange = e => {
     const { name, value } = e.target;
-    setF(prev => ({ ...prev, [name]: value }));
+    setFilters(f => ({ ...f, [name]: value }));
+  };
+
+  const handleClear = () => {
+    setFilters(initialFilters);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    onApply(f);
+    if (!ready) return; 
+    const results = filterData(filters);
+    navigate('/results', { state: { results } });
   };
 
   return (
     <div className="filter-popup">
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Site:</label>
-          <select name="site" value={f.site} onChange={handleChange}>
-            <option value="">All</option>
-            <option value="NE">NE</option>
-            <option value="UI">UI</option>
-          </select>
-        </div>
-        <div>
-          <label>Study:</label>
-          <select name="study" value={f.study} onChange={handleChange}>
-            <option value="">All</option>
-            <option value="obs">obs</option>
-            <option value="int">int</option>
-          </select>
-        </div>
-        <div>
-          <label>Task (prefix):</label>
-          <input
-            type="text"
-            name="task"
-            placeholder="e.g. NNB"
-            value={f.task}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Category:</label>
-          <input
-            type="text"
-            name="category"
-            placeholder="e.g. 1"
-            value={f.category}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Apply</button>
-        <button type="button" onClick={onClose}>Cancel</button>
-      </form>
+      <div ref={popupRef} className="filter-content">
+        <h3>Filter Tasks</h3>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Site:
+            <select name="site" value={filters.site} onChange={handleChange}>
+              <option value="">All</option>
+              {SITE_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </label>
+
+          <label>
+            Study:
+            <select name="study" value={filters.study} onChange={handleChange}>
+              <option value="">All</option>
+              {STUDY_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </label>
+
+          <label>
+            Task:
+            <select name="task" value={filters.task} onChange={handleChange}>
+              <option value="">All</option>
+              {TASK_OPTIONS.map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+
+          <label>
+            Category:
+            <input
+              type="text"
+              name="category"
+              placeholder="e.g. 1, 2, or 3 - nothing higher!"
+              value={filters.category}
+              onChange={handleChange}
+            />
+          </label>
+
+          <div className="filter-buttons">
+            <button type="submit" disabled={!ready}>
+              Apply
+            </button>
+            <button
+              type="button"
+              className="clear-button"
+              onClick={handleClear}
+              disabled={JSON.stringify(filters) === JSON.stringify(initialFilters)}
+            >
+              Clear
+            </button>
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

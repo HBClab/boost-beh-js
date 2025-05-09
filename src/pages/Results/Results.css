@@ -23,7 +23,7 @@
 .search-wrapper {
   width: 100%;
   max-width: 900px;
-  margin-top: 20px;
+  margin-top: 40px auto 30px;
   display: flex;
   justify-content: center;
 }

@@ -15,13 +15,13 @@ const Banner = () => {
 
   // 1) Fetch data.json once on mount
   useEffect(() => {
-    fetch('/data.json')
+  fetch(`${window.location.origin}/data/data.json`) // ✅ safest
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
       })
       .then(json => setRawData(json))
-      .catch(err => console.error('Failed to load data.json:', err));
+      .catch(err => console.error('Failed to load data.json in banner:', err));
   }, []);
 
   const openFilter  = () => setShowFilter(true);
@@ -33,25 +33,9 @@ const Banner = () => {
       return;
     }
 
-    // 2) Run your existing filterLogic
-    const filtered = filterData(rawData, filters);
-
-    // 3) Map to cards
-    const cards = Object.entries(filtered).flatMap(
-      ([subjectId, subjectData]) =>
-        Object.entries(subjectData.tasks).map(([taskKey, taskVal]) => ({
-          title:    `${taskKey} - Subject ${subjectId}`,
-          date:     new Date(taskVal.date).toISOString().split('T')[0],
-          site:     subjectData.site,
-          category: taskVal.category,
-          image1:   taskVal.png_paths?.[0] ?? '',
-          image2:   taskVal.png_paths?.[1] ?? ''
-        }))
-    );
-
-    // 4) Close popup and navigate
-    setShowFilter(false);
-    navigate('/results', { state: { results: cards } });
+  // ✅ Banner just passes the raw acc object
+  const filteredAcc = filterData(rawData, filters);
+  navigate('/results', { state: { filtered: filteredAcc } });
   };
 
   return (
