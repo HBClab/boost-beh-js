@@ -87,3 +87,10 @@
   cursor: pointer;
   font-size: 1.25rem;
 }
+/* shrink on small screens */
+@media screen and (max-width: 600px) {
+  .page-title {
+    font-size: 3rem;      /* smaller heading */
+    margin-bottom: 40px;  /* less space below */
+  }
+}

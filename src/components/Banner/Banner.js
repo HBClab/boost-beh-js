@@ -37,13 +37,20 @@ const Banner = () => {
   const filteredAcc = filterData(rawData, filters);
   navigate('/results', { state: { filtered: filteredAcc } });
   };
+  const testingHome = () => {
+    console.log('navigating home');
+    navigate('/');
+  };
+
 
   return (
     <div className="navigation">
       <div className="navigationBackground" />
 
       {/* Top-left icon */}
-      <IconSvg className="topLeftIcon" />
+      <button className="topLeftIcon" onClick={testingHome}>
+        <IconSvg alt="BOOST icon" className="topLeftIcon-img" />
+      </button>
 
       {/* Waffle filter button */}
       <div className="buttonWrapper">
@@ -57,7 +64,7 @@ const Banner = () => {
         <button className="navButton" onClick={() => navigate('/')}>
           Home
         </button>
-        <button className="navButton" onClick={() => navigate('/results')}>
+        <button className="navButton" onClick={() => navigate('/inprogress')}>
           Group Level Analyses
         </button>
       </div>

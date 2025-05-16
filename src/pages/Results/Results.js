@@ -23,7 +23,6 @@ export default function Results() {
     image1:   item.png_paths?.[0] ?? '',
     image2:   item.png_paths?.[1] ?? ''
   }), []);
-//  This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
   // whenever `passedResults` changes, re-map to cards
   useEffect(() => {
     setCards(passedResults.map(toCard));
