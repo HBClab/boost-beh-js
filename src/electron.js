@@ -3,7 +3,7 @@ const { app, BrowserWindow, session } = require('electron');
 const path = require('path');
 const os = require('os');
 const sparseClone = require('./scripts/sparseCheckout'); // ← Import it at the top
-
+const { updateElectronApp } = require('update-electron-app');
 // ─── Dev Hot-Reload ─────────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
   require('electron-reload')(__dirname, {
@@ -16,6 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
 let mainWindow;
 
 async function createWindow() {
+  updateElectronApp(); // additional configuration options available
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
