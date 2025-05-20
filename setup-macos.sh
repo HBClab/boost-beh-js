@@ -47,19 +47,41 @@ fi
 
 echo -e "\n${YELLOW}📁 Preparing project dependencies...${NC}"
 
-# ─── Install Node Modules ─────────────────────────────────────────────────────
-echo -e "${YELLOW}📦  Installing npm dependencies from package-lock.json...${NC}"
+# ─── Check for Node and NPM ──────────────────────────────────────────────────
+if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
+  echo -e "${RED}❌ Node.js or npm is not installed.${NC}"
+  echo -e "${YELLOW}📦 Installing Node.js via Homebrew...${NC}"
 
-NPM_OUTPUT=$(npm install 2>&1)
-NPM_EXIT=$?
+  if brew install node &> /dev/null; then
+    echo -e "${GREEN}✅ Node.js installed.${NC}"
 
-if [ $NPM_EXIT -eq 0 ]; then
-  echo -e "${GREEN}✅  npm dependencies installed successfully.${NC}"
+    # Add Node to PATH manually if still not found
+    if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
+      echo -e "${YELLOW}⚙️  Node still not available. Trying to source shell profile...${NC}"
+
+      SHELL_PROFILE=""
+      [[ -f ~/.zshrc ]] && SHELL_PROFILE=~/.zshrc
+      [[ -f ~/.bash_profile ]] && SHELL_PROFILE=~/.bash_profile
+      [[ -f ~/.bashrc ]] && SHELL_PROFILE=~/.bashrc
+
+      if [ -n "$SHELL_PROFILE" ]; then
+        source "$SHELL_PROFILE"
+        export PATH="/opt/homebrew/bin:$PATH" # For Apple Silicon
+      fi
+
+      # Recheck availability
+      if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
+        echo -e "${RED}❌ Node.js installation complete but not available in PATH.${NC}"
+        echo -e "${YELLOW}👉 Try opening a new terminal session or add Homebrew to PATH manually.${NC}"
+        exit 1
+      fi
+    fi
+  else
+    echo -e "${RED}❌ Failed to install Node.js via Homebrew.${NC}"
+    exit 1
+  fi
 else
-  echo -e "${RED}❌  npm install failed. Please check your Node.js setup or network.${NC}"
-  echo -e "${YELLOW}📄 npm error output:${NC}\n"
-  echo "$NPM_OUTPUT"
-  exit 1
+  echo -e "${GREEN}✔ Node.js and npm are already installed.${NC}"
 fi
 
 # ─── Verify React ─────────────────────────────────────────────────────────────
