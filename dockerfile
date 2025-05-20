@@ -5,7 +5,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy build files
-COPY build/ ./build/
+RUN npm run build
 
 # Install 'serve' globally to serve static files
 RUN npm install -g serve
