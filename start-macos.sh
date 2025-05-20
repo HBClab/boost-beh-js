@@ -17,6 +17,7 @@ echo ""
 echo -e "${YELLOW}🔍  Checking for updates from upstream/main...${NC}"
 
 # ─── Git Update Check ─────────────────────────────────────────────────────────
+<<<<<<< HEAD
 echo -e "${YELLOW}🔍 Checking for remote updates...${NC}"
 
 git fetch || {
@@ -51,6 +52,19 @@ if [ "$LOCAL" != "$REMOTE" ]; then
   fi
 else
   echo -e "${GREEN}✔ Already up to date.${NC}"
+=======
+git fetch upstream main &> /dev/null
+
+LOCAL=$(git rev-parse HEAD)
+REMOTE=$(git rev-parse upstream/main)
+
+if [ "$LOCAL" != "$REMOTE" ]; then
+  echo -e "${YELLOW}⬇ Updates available. Pulling from upstream/main...${NC}"
+  git pull upstream main --rebase || { echo -e "${RED}❌ Git pull failed. Aborting.${NC}"; exit 1; }
+  echo -e "${GREEN}✅ Repository updated.${NC}"
+else
+  echo -e "${GREEN}✔ Already up to date with upstream/main.${NC}"
+>>>>>>> 84a94efd0b226436f8434c2a000fc4578c0cdd58
 fi
 
 # ─── Electron Version Lock ────────────────────────────────────────────────────
