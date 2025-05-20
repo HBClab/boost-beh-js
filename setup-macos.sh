@@ -34,11 +34,12 @@ else
 fi
 
 # ─── Check for Node and NPM ──────────────────────────────────────────────────
-if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
-  echo -e "${RED}❌ Node.js or npm is not installed.${NC}"
   echo -e "${YELLOW}📦 Installing Node.js via Homebrew...${NC}"
 
-  if brew install node &> /dev/null; then
+  BREW_OUTPUT=$(brew install node 2>&1)
+  BREW_EXIT=$?
+
+  if [ $BREW_EXIT -eq 0 ]; then
     echo -e "${GREEN}✅ Node.js installed.${NC}"
 
     # Add Node to PATH manually if still not found
@@ -55,25 +56,19 @@ if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
         export PATH="/opt/homebrew/bin:$PATH" # For Apple Silicon
       fi
 
-      # Recheck availability
       if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
-        echo -e "${RED}❌ Node.js installation complete but not available in PATH.${NC}"
-        echo -e "${YELLOW}👉 Try opening a new terminal session or add Homebrew to PATH manually.${NC}"
+        echo -e "${RED}❌ Node.js installed but not available in PATH.${NC}"
+        echo -e "${YELLOW}📄 PATH troubleshooting tip:${NC}"
+        echo -e "Add this to your shell profile:\n\n  export PATH=\"/opt/homebrew/bin:\$PATH\"\n"
         exit 1
       fi
     fi
   else
     echo -e "${RED}❌ Failed to install Node.js via Homebrew.${NC}"
+    echo -e "${YELLOW}📄 Brew error output:${NC}\n"
+    echo "$BREW_OUTPUT"
     exit 1
   fi
-else
-  echo -e "${GREEN}✔ Node.js and npm are already installed.${NC}"
-fi
-
-# ─────────────────────────────────────────────────────────────────────────────
-
-echo -e "\n${YELLOW}📁 Preparing project dependencies...${NC}"
-
 # ─── Install Node Modules ─────────────────────────────────────────────────────
 echo -e "${YELLOW}📦  Installing npm dependencies from package-lock.json...${NC}"
 
