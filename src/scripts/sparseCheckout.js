@@ -37,8 +37,8 @@ function dataIsDifferent(srcDir, destDir) {
   return false;
 }
 
-async function sparseClone() {
-  console.log('🔄 Cloning sparse repo to temp directory...');
+  async function sparseClone(logger = console.log) {
+  logger('🔄 Cloning sparse repo to temp directory...');
   fs.mkdirSync(TEMP_DIR, { recursive: true });
 
   execSync(`git init`, { cwd: TEMP_DIR });
@@ -55,21 +55,22 @@ async function sparseClone() {
   const targetJsonPath = path.join(TARGET_DIR, 'data.json');
 
   if (dataIsDifferent(extractedDataPath, TARGET_DIR) || !fs.existsSync(targetJsonPath)) {
-    console.log('🔁 Updating public/data with new changes...');
+    logger('🔁 Updating public/data with new changes...');
     fsExtra.removeSync(TARGET_DIR);
     fsExtra.copySync(extractedDataPath, TARGET_DIR);
 
     if (fs.existsSync(extractedJsonPath)) {
       fsExtra.copySync(extractedJsonPath, targetJsonPath);
     } else {
-      console.warn('⚠️ data.json not found in sparse checkout');
+      logger('⚠️ data.json not found in sparse checkout');
     }
   } else {
-    console.log('✅ No changes found in data. Skipping update.');
+    logger('✅ No changes found in data. Skipping update.');
   }
 
   fsExtra.removeSync(TEMP_DIR);
-  console.log('✅ Cleanup complete.');
+ 
+  logger('✅ Cleanup complete.');
 }
 
 module.exports = sparseClone;

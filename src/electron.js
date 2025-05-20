@@ -3,7 +3,6 @@ const { app, BrowserWindow, session } = require('electron');
 const path = require('path');
 const os = require('os');
 const sparseClone = require('./scripts/sparseCheckout'); // ← Import it at the top
-const { updateElectronApp } = require('update-electron-app');
 // ─── Dev Hot-Reload ─────────────────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'production') {
   require('electron-reload')(__dirname, {
@@ -16,30 +15,37 @@ if (process.env.NODE_ENV !== 'production') {
 let mainWindow;
 
 async function createWindow() {
-  updateElectronApp(); // additional configuration options available
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
+      preload: path.join(__dirname, 'preload.js')
     },
   });
 
   // Load the static build (no localhost)
   const indexPath = path.join(__dirname, '../build/index.html');
-  await mainWindow.loadFile(indexPath);
+  // first load the React app at #/init-load
+  await mainWindow.loadURL(`file://${indexPath}#/init-load`);
 
   // Open DevTools in dev mode
   if (process.env.NODE_ENV !== 'production') {
     mainWindow.webContents.openDevTools();
   }
-  // ✅ Run sparseClone after the window is created and loaded
+  // now run sparseClone, sending each message to the renderer
   try {
-    await sparseClone();
-    console.log('✅ sparseClone completed after window load.');
+    await sparseClone(msg => {
+      console.log(msg);
+      mainWindow.webContents.send('sparse-log', msg);
+    });
+    // tell the UI we're done
+    mainWindow.webContents.send('sparse-done');
   } catch (err) {
     console.error('❌ Failed to run sparseClone:', err);
+    mainWindow.webContents.send('sparse-log', `❌ ${err.message}`);
+    mainWindow.webContents.send('sparse-done');
   }
 }
 

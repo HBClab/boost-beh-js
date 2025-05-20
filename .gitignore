@@ -12,7 +12,7 @@
 /build
 
 /out
-
+/public/data
 # misc
 .DS_Store
 .env.local

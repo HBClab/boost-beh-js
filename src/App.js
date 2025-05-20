@@ -3,6 +3,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home/Home";
 import Results from "./pages/Results/Results";
 import InProgress from "./pages/InProgress/InProgress";
+import InitLoad from "./pages/InitLoad/InitLoad";
 import './App.css';
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <div className="app">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/init-load" element={<InitLoad />} />
             <Route path="/results" element={<Results />} />
             <Route path="/inprogress" element={<InProgress />} />
           </Routes>
