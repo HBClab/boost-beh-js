@@ -23,7 +23,7 @@ function flattenData(nested) {
  * Call this once before using filterData
  */
 export async function initFilterData() {
-  const res = await fetch('/data/data.json');
+  const res = await fetch('data/data.json');
   parsedData = await res.json();
   flatItems = flattenData(parsedData);
 }

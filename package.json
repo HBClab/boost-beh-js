@@ -20,19 +20,14 @@
   },
   "scripts": {
     "react-start": "react-scripts start",
-<<<<<<< HEAD
-=======
     "start": "electron-forge start",
->>>>>>> 84a94efd0b226436f8434c2a000fc4578c0cdd58
     "build": "react-scripts build",
     "electron": "electron ./src/electron.js",
     "electron-dev": "DEBUG=electron:* npm run build && electron ./src/electron.js",
     "package": "rm -rf out && electron-forge package",
-<<<<<<< HEAD
-=======
     "make": "electron-forge make",
-    "publish": "electron-forge publish"
->>>>>>> 84a94efd0b226436f8434c2a000fc4578c0cdd58
+    "publish": "electron-forge publish",
+    "postbuild": "cp -R public/data build/data"
   },
   "eslintConfig": {
     "extends": [
