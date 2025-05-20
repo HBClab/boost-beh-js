@@ -2,9 +2,9 @@
 
 ## Table of Contents
 
-- [Introduction ~ What does this app do?](##Introduction)
-- [Installation](##Installation)
-- [Usage](##Usage)
+- [Introduction ~ What does this app do?](#Introduction)
+- [Installation](#Installation)
+- [Usage](#Usage)
 
 ---
 
