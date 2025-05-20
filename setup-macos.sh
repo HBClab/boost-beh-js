@@ -36,40 +36,60 @@ fi
 # ─── Check for Node and NPM ──────────────────────────────────────────────────
   echo -e "${YELLOW}📦 Installing Node.js via Homebrew...${NC}"
 
+# ─── Check for Node and NPM ──────────────────────────────────────────────────
+if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
+  echo -e "${RED}❌ Node.js or npm is not installed.${NC}"
+
+  # ─── Check for Homebrew ────────────────────────────────────────────────────
+  if ! command -v brew &> /dev/null; then
+    echo -e "${YELLOW}🍺 Homebrew not found. Installing Homebrew...${NC}"
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    # Add Homebrew to PATH immediately for this script
+    if [ -d "/opt/homebrew/bin" ]; then
+      export PATH="/opt/homebrew/bin:$PATH"
+    elif [ -d "/usr/local/bin" ]; then
+      export PATH="/usr/local/bin:$PATH"
+    fi
+  fi
+
+  # ─── Install Node via Homebrew ─────────────────────────────────────────────
+  echo -e "${YELLOW}📦 Installing Node.js via Homebrew...${NC}"
   BREW_OUTPUT=$(brew install node 2>&1)
   BREW_EXIT=$?
 
-  if [ $BREW_EXIT -eq 0 ]; then
-    echo -e "${GREEN}✅ Node.js installed.${NC}"
-
-    # Add Node to PATH manually if still not found
-    if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
-      echo -e "${YELLOW}⚙️  Node still not available. Trying to source shell profile...${NC}"
-
-      SHELL_PROFILE=""
-      [[ -f ~/.zshrc ]] && SHELL_PROFILE=~/.zshrc
-      [[ -f ~/.bash_profile ]] && SHELL_PROFILE=~/.bash_profile
-      [[ -f ~/.bashrc ]] && SHELL_PROFILE=~/.bashrc
-
-      if [ -n "$SHELL_PROFILE" ]; then
-        source "$SHELL_PROFILE"
-        export PATH="/opt/homebrew/bin:$PATH" # For Apple Silicon
-      fi
-
-      if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
-        echo -e "${RED}❌ Node.js installed but not available in PATH.${NC}"
-        echo -e "${YELLOW}📄 PATH troubleshooting tip:${NC}"
-        echo -e "Add this to your shell profile:\n\n  export PATH=\"/opt/homebrew/bin:\$PATH\"\n"
-        exit 1
-      fi
-    fi
-  else
-    echo -e "${RED}❌ Failed to install Node.js via Homebrew.${NC}"
-    echo -e "${YELLOW}📄 Brew error output:${NC}\n"
-    echo "$BREW_OUTPUT"
+  if [ $BREW_EXIT -ne 0 ]; then
+    echo -e "${RED}❌ Brew failed to install Node.js.${NC}"
+    echo -e "${YELLOW}📄 Brew error output:${NC}\n$BREW_OUTPUT"
     exit 1
   fi
-# ─── Install Node Modules ─────────────────────────────────────────────────────
+
+  # ─── Add Node to PATH If Still Missing ─────────────────────────────────────
+  if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
+    echo -e "${YELLOW}⚙️  Node still not available. Trying to source shell profile...${NC}"
+
+    SHELL_PROFILE=""
+    [[ -f ~/.zshrc ]] && SHELL_PROFILE=~/.zshrc
+    [[ -f ~/.bash_profile ]] && SHELL_PROFILE=~/.bash_profile
+    [[ -f ~/.bashrc ]] && SHELL_PROFILE=~/.bashrc
+
+    if [ -n "$SHELL_PROFILE" ]; then
+      source "$SHELL_PROFILE"
+      export PATH="/opt/homebrew/bin:$PATH" # Apple Silicon fallback
+    fi
+
+    if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
+      echo -e "${RED}❌ Node.js installation complete but not available in PATH.${NC}"
+      echo -e "${YELLOW}👉 Add this to your shell config manually:${NC}"
+      echo -e "export PATH=\"/opt/homebrew/bin:\$PATH\""
+      exit 1
+    fi
+  fi
+
+  echo -e "${GREEN}✅ Node.js and npm installed successfully.${NC}"
+else
+  echo -e "${GREEN}✔ Node.js and npm are already installed.${NC}"
+fi ─── Install Node Modules ─────────────────────────────────────────────────────
 echo -e "${YELLOW}📦  Installing npm dependencies from package-lock.json...${NC}"
 
 NPM_OUTPUT=$(npm install 2>&1)
