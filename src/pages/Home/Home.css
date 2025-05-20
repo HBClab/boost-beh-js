@@ -1,0 +1,96 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #e1f1f1; /* Light blue background */
+  margin: 0;
+  padding: 0;
+}
+
+/* 
+   We'll store the divider's x-position in a CSS variable 
+   so you can tweak it easily (e.g., 40%, 60%, etc.).
+*/
+.home-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centers vertically */
+  align-items: center;     /* centers horizontally */
+  flex: 1;
+  height: calc(100vh - 125px); 
+  padding: 0 1rem;
+}
+
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #e1f1f1;
+  margin: 0;
+  padding: 0;
+}
+
+.home-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+}
+
+/* Title Styling */
+.page-title {
+  font-size: 6.5rem;
+  font-weight: bold;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #333;
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+/* Search Wrapper: same width, centered */
+.search-wrapper {
+  width: 75vw;
+  max-width: 900px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Search Bar */
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 1.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+.search-button {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-left: none;
+  background-color: #eee;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+/* shrink on small screens */
+@media screen and (max-width: 600px) {
+  .page-title {
+    font-size: 3rem;      /* smaller heading */
+    margin-bottom: 40px;  /* less space below */
+  }
+}
