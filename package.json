@@ -27,7 +27,7 @@
     "package": "rm -rf out && electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "postbuild": "cp -R public/data build/data"
+    "postbuild": "[ -d public/data ] && cp -R public/data build/data || echo 'No public/data folder to copy.'"
   },
   "eslintConfig": {
     "extends": [
