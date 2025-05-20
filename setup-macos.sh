@@ -89,7 +89,8 @@ if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
   echo -e "${GREEN}✅ Node.js and npm installed successfully.${NC}"
 else
   echo -e "${GREEN}✔ Node.js and npm are already installed.${NC}"
-fi ─── Install Node Modules ─────────────────────────────────────────────────────
+fi 
+#── Install Node Modules ─────────────────────────────────────────────────────
 echo -e "${YELLOW}📦  Installing npm dependencies from package-lock.json...${NC}"
 
 NPM_OUTPUT=$(npm install 2>&1)
