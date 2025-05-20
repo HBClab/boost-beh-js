@@ -37,20 +37,6 @@ fi
 if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
   echo -e "${RED}❌ Node.js or npm is not installed.${NC}"
   echo -e "${YELLOW}📦 Installing Node.js via Homebrew...${NC}"
-  brew install node &> /dev/null
-  echo -e "${GREEN}✅ Node.js and npm installed.${NC}"
-else
-  echo -e "${GREEN}✔ Node.js and npm are already installed.${NC}"
-fi
-
-# ─────────────────────────────────────────────────────────────────────────────
-
-echo -e "\n${YELLOW}📁 Preparing project dependencies...${NC}"
-
-# ─── Check for Node and NPM ──────────────────────────────────────────────────
-if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
-  echo -e "${RED}❌ Node.js or npm is not installed.${NC}"
-  echo -e "${YELLOW}📦 Installing Node.js via Homebrew...${NC}"
 
   if brew install node &> /dev/null; then
     echo -e "${GREEN}✅ Node.js installed.${NC}"
@@ -82,6 +68,25 @@ if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
   fi
 else
   echo -e "${GREEN}✔ Node.js and npm are already installed.${NC}"
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+echo -e "\n${YELLOW}📁 Preparing project dependencies...${NC}"
+
+# ─── Install Node Modules ─────────────────────────────────────────────────────
+echo -e "${YELLOW}📦  Installing npm dependencies from package-lock.json...${NC}"
+
+NPM_OUTPUT=$(npm install 2>&1)
+NPM_EXIT=$?
+
+if [ $NPM_EXIT -eq 0 ]; then
+  echo -e "${GREEN}✅  npm dependencies installed successfully.${NC}"
+else
+  echo -e "${RED}❌  npm install failed. Please check your Node.js setup or network.${NC}"
+  echo -e "${YELLOW}📄 npm error output:${NC}\n"
+  echo "$NPM_OUTPUT"
+  exit 1
 fi
 
 # ─── Verify React ─────────────────────────────────────────────────────────────
