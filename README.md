@@ -34,7 +34,7 @@ These steps will walk you through installing Git, Docker Desktop, and running th
 ---
 #### Check if Git is Installed
 
-Open a terminal and run:
+Open a terminal (or powershell for Windows) and run:
 
 ```sh
 git --version
@@ -57,7 +57,8 @@ Or download it from the official installer:
 
 🟦 Windows
 
-Use Git for Windows. During installation, you can accept the default options.
+Use the below link to install Git for Windows. During installation, you can accept the default options.
+https://github.com/git-for-windows/git/releases/download/v2.49.0.windows.1/Git-2.49.0-64-bit.exe
 
 🟢 Linux (Debian/Ubuntu)
 ```sh
