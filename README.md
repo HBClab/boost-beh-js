@@ -148,4 +148,3 @@ The app is designed to support two main workflows:
 - 🏠 Use the **search bar** on the **Home page** or any **Results page** to look up participants by ID.
 - 🧇 Click the **waffle icon** in the top-right corner at any time to open the **filter slider** and refine your view.
 
-Let me know if you’d like this to be collapsible, have a visual example, or be tailored for a help guide instead of a README.
