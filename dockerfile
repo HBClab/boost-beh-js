@@ -14,6 +14,7 @@ RUN npm config set registry https://registry.npmjs.org/ && npm install
 # Copy all source code
 COPY . .
 
+RUN dos2unix docker-entrypoint.sh
 # Copy entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
