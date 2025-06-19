@@ -1,0 +1,108 @@
+/* GroupHome.css */
+
+/* 1) Root container fills the viewport and stacks banner + content vertically */
+.group-home-container {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* Container for title, divider, and subtitle */
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Title Styling */
+.page-title {
+  font-size: 4.5rem;
+  font-weight: bold;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #333;
+  text-align: center;
+  margin: 0.9rem 0;
+}
+
+/* Divider line centered under title */
+.title-divider {
+  width: 33%;
+  border-top: 2px solid #333;
+  margin: 1rem 0;
+}
+
+/* Subtitle Styling */
+.page-subtitle {
+  font-size: 2rem; /* 2/3 of 4.5rem title size */
+  font-weight: normal;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: #555;
+  text-align: center;
+}
+
+.button-grid {
+  display: grid;
+  /* 2 columns of at least 12rem each */
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+
+  /* 👇 change this value (in rem) to control button height */
+  grid-auto-rows: 10rem;
+
+  gap: 1rem;
+  flex: 1; /* grow to fill available space */
+
+  /* 👇 controls vertical alignment of the whole grid:
+       • start → stick to top
+       • center → perfectly centered
+       • end   → stick to bottom */
+  align-content: center;;
+  padding-left: 2rem;   /* adjust this value as needed */
+  padding-right: 2rem;
+  padding-top: 9rem; /* space above the grid */
+  /* optionally, nudge the grid up/down with relative padding:
+     padding-bottom: 5vh; */
+  /* padding-top: 5vh; */
+}
+
+.button-wrapper {
+  width: 100%;
+  /* fill the grid row height so its child button can stretch */
+  height: 100%;
+}
+
+.button-wrapper button {
+  /* fill wrapper vertically */
+  height: 100%;
+
+  /* your existing styling… */
+  display: block;
+  width: 100%;
+  /* (padding can be removed or reduced now that height is fixed) */
+  padding: 0; 
+  background-color: #666a86;
+  color: #fff;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* 6) Hover/focus state for better affordance */
+.button-wrapper button:hover,
+.button-wrapper button:focus {
+  background-color: #5c5e7c;  /* slightly darker slate gray */
+  outline: none;
+}
+
+/* 7) Responsive adjustments—stack buttons on very narrow screens */
+@media (max-width: 400px) {
+  .button-grid {
+    grid-template-columns: 1fr;
+  }
+}

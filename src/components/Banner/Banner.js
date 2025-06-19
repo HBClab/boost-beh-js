@@ -16,12 +16,16 @@ const Banner = () => {
 
   // 1) Fetch data.json once on mount
 useEffect(() => {
-  try {
-    const jsonData = fetch('data/data.json');
-    setRawData(jsonData);
-  } catch (err) {
-    console.error('❌ Failed to load data.json in banner (via preload):', err);
-  }
+  const fetchData = async () => {
+    try {
+      const res = await fetch('data/data.json');
+      const json = await res.json();
+      setRawData(json);
+    } catch (err) {
+      console.error('❌ Failed to load data.json in banner (via preload):', err);
+    }
+  };
+  fetchData();
 }, []);
 
   const openFilter  = () => setShowFilter(true);
@@ -64,7 +68,7 @@ useEffect(() => {
         <button className="navButton" onClick={() => navigate('/')}>
           Home
         </button>
-        <button className="navButton" onClick={() => navigate('/inprogress')}>
+        <button className="navButton" onClick={() => navigate('/group')}>
           Group Level Analyses
         </button>
       </div>
