@@ -4,11 +4,11 @@ import './GroupCard.css';
 const ResultCard = ({ groupImageUrl }) => {
   if (!groupImageUrl) {
     return (
-      <div className="group-card error">
-        <div className="group-card-header">
-          <div className="group-card-title">Error</div>
+      <div className="card error">
+        <div className="card-header">
+          <div className="card-title">Error</div>
         </div>
-        <div className="group-card-body">No image URL provided</div>
+        <div className="card-body">No image URL provided</div>
       </div>
     );
   }
@@ -21,14 +21,14 @@ const ResultCard = ({ groupImageUrl }) => {
 
   return (
     <div
-      className="group-card"
+      className="card"
       style={{ '--card-height': `${DEFAULT_CARD_HEIGHT}px` }}
     >
-      <div className="group-card-header">
-        <div className="group-card-title">Group Plot</div>
+      <div className="card-header">
+        <div className="card-title">Group Plot</div>
       </div>
 
-      <hr className="group-card-divider" />
+      <hr className="card-divider" />
 
       <div className="group-wrapper">
         <div className="group-container">

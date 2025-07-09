@@ -2,9 +2,9 @@
 /* src/components/GroupCard/GroupCard.css */
 
 /* ─── The Card Container ─── */
-.group-card {
+.card {
   /* If you want to override height, set --card-height elsewhere. Defaults to 800px. */
-  height: var(--card-height);
+  height: var(--card-height, 800px);
   width: 90vw;           /* or 90% if you prefer percentage of parent */
   max-width: 1000px;     /* optional cap */
   margin: 20px auto;
@@ -19,7 +19,7 @@
 }
 
 /* ─── Header (fixed size, does not flex) ─── */
-.group-card-header {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -27,14 +27,14 @@
   margin-bottom: 8px;
 }
 
-.group-card-title {
+.card-title {
   font-size: 1.5rem;
   font-weight: 600;
   color: #222;
   font-family: "Poppins", sans-serif;
 }
 
-.group-card-meta {
+.card-meta {
   display: flex;
   flex-direction: column;
   text-align: right;
@@ -43,7 +43,7 @@
 }
 
 /* ─── Divider Line (fixed) ─── */
-.group-card-divider {
+.card-divider {
   border: none;
   border-top: 1px solid #ccc;
   flex-shrink: 0;    /* never grow/shrink */

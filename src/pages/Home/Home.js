@@ -10,9 +10,7 @@ function Home() {
       <Banner />
       <div className="home-content">
         <div className="page-title">Boost Cognitive Assessments</div>
-        <div className="search-wrapper">
-          <Search onSearch={(query) => console.log('Searching for:', query)} />
-        </div>
+          <Search className="search-positioning" onSearch={(query) => console.log('Searching:', query)} />
       </div>
     </div>
 

@@ -1,15 +1,16 @@
 import React from 'react';
 import './ResultCard.css';
+import { downloadCsv } from './downloadLogic.js';
 
 const ResultCard = ({ data }) => {
-  const { title, date, site, category, image1, image2 } = data;
+  const { title, date, site, category, image1, image2, csv } = data;
   const openImage = (url) => {
     if (!url) return;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
   return (
     <div className="card">
-      <div className="card-bg"></div>
+
       <div className="card-header">
         <div className="card-title-date">
           <div className="card-title">{title}</div>
@@ -17,9 +18,11 @@ const ResultCard = ({ data }) => {
         </div>
         <div className="card-category-site">
           <div className="card-category">QA Category: {category}</div>
-          <div className="card-site">Site: {site}</div>
+          <div className="card-session">Session: {site}</div>
         </div>
       </div>
+
+      <div className="card-bg" />
       <div className="card-images">
         {image1 && (
           <button
@@ -40,6 +43,15 @@ const ResultCard = ({ data }) => {
           </button>
         )}
       </div>
+          <div className="card-footer">
+        <button 
+          className="download-button"
+          onClick={() => downloadCsv(csv)}
+        >
+          Download CSV
+        </button>
+      </div>
+
     </div>
   );
 };

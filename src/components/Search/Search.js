@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { initSearch, search, getTasksForSubject } from './searchLogic';
+import icon from '../../assets/svg/search.svg';
 import './Search.css';
 
-const Search = () => {
+const Search = ({ className = ''}) => {
   const [query, setQuery]             = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -25,7 +26,7 @@ const Search = () => {
       setSuggestions([]);
       return;
     }
-    setSuggestions(search(q).slice(0, 5));
+    setSuggestions(search(q));  // remove slice(0, 5) to fix max issues
   };
 
   const handleKeyDown = (e) => {
@@ -72,7 +73,7 @@ const Search = () => {
   };
 
   return (
-    <div className="search-container">
+    <div className={"search-container ${className}"}>
       <input
         value={query}
         onChange={handleChange}
@@ -84,7 +85,7 @@ const Search = () => {
         className="search-button"
         onClick={() => selectSuggestion(suggestions[0] || { type: 'task', item: null })}
       >
-        🔍
+      <img src={icon} alt="search button" className="search-icon" />
       </button>
 
       {suggestions.length > 0 && (

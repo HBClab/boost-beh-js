@@ -1,34 +1,30 @@
 .card {
-    max-width: 85vw;
-    width: calc(100% - 20px);
-    margin: 20px auto;
-    position: relative;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: fit-content;
+  display: flex;
+  margin: 10px;
+  flex-direction: column; /* Stack card content vertically */
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  overflow: hidden;           /* clip any overflow just in case */
+  width: 90vw;
 }
-
 
 .card-bg {
-  height: 4px;
+  height: 2px;
   background: linear-gradient(to right, #667eea, #764ba2);
-  border-radius: 4px 4px 0 0;
-  margin-bottom: 12px;
+  margin-bottom:20px;
 }
-
 .card-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  align-items: flex-start;    /* change from center to flex-start */
+  padding: 16px;
 }
 
+
 .card-title-date,
-.card-category-site {
+.card-category-session {
   display: flex;
   flex-direction: column;
 }
@@ -51,7 +47,7 @@
   text-align: right;
 }
 
-.card-site {
+.card-session {
   font-size: 0.875rem;
   color: #888;
   text-align: right;
@@ -59,31 +55,48 @@
 
 .card-images {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 12px;
+  width: 100%;                /* fill the card’s width */
+  gap: 10px;                  /* space between the two plots */
+  /* center horizontally */
+  justify-content: center;    /* center the images */
 }
 
-.card-img {
-  max-width: 45%;
-  height: auto;
-  border-radius: 4px;
-}.card-images {
-  display: flex;
-  gap: 1rem;
-}
-
-/* remove default button styling */
 .card-img-button {
-  background: none;
   border: none;
-  padding: 0;
+  background: none;
   cursor: pointer;
+  display: flex;              /* so we can center the img if you want */
+  align-items: center;
+  justify-content: center;
 }
 
-/* keep your existing img styling */
 .card-img {
+  width: 100%;                /* fill its button wrapper */
   display: block;
-  max-width: 100%;
-  height: auto;
+  object-fit: contain;        /* preserves aspect ratio */
+  border-radius: 8px;        /* rounded corners for the images */
+}
+
+
+/* Add to your existing ResultCard.css */
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  border-top: 1px solid #eee;
+}
+
+.download-button {
+  padding: 8px 16px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.download-button:hover {
+  background-color: #3a7bc8;
 }

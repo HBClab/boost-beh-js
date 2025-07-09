@@ -1,6 +1,6 @@
 .results-container {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh - 125px;
   background-color: #e1f1f1;
   display: flex;
   flex-direction: column;
@@ -10,31 +10,36 @@
   padding: 0;
 }
 
-.home-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #e1f1f1; /* Light blue background */
-  margin: 0;
-  padding: 0;
-}
-
 /* Centered search bar */
-.search-wrapper {
-  width: 100%;
-  max-width: 900px;
-  margin-top: 40px auto 30px;
+.search-container {
+  width: 80%;
+  max-width: 185vw;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 }
-
-/* Wrapper for cards to center each one */
-.cards-wrapper {
-  width: 100%;
-  max-width: 185vw;
+/* your existing grid: now centers cards in the row */
+.results-grid {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
+  flex-wrap: wrap;
+
+  /* center the cards on the main axis */
+  justify-content: center;
+
+  /* keep each row of wrappers packed to the top */
+  align-items: flex-start;  
+  align-content: flex-start; 
+
   gap: 20px;
+  width: 100%;
 }
+.card-wrapper {
+  display: flex;
+  flex: 0 0 auto;
+  align-self: flex-start;
+  height: fit-content;
+  align-items: flex-start;
+  max-height: fit-content;    /* ensure it doesn't grow beyond content */
+}
+
+
