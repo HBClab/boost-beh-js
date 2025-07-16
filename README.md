@@ -130,6 +130,67 @@ You can now access the app at:
 
 ---
 
+## Updating 
+
+
+📁 Step 1: Make sure you’re one level above the boost-beh-js folder
+
+🖼️ Visual guide:
+```
+YourProjectFolder/
+├── boost-beh-js/     ← This is the folder to delete
+└── (other stuff)
+```
+If you’re inside the folder now:
+```
+cd ..
+```
+
+⸻
+
+🗑️ Step 2: Remove the boost-beh-js folder completely
+
+On Windows PowerShell:
+```
+Remove-Item -Recurse -Force .\boost-beh-js\
+```
+
+On macOS/Linux (in Terminal):
+```
+rm -rf ./boost-beh-js
+```
+
+⸻
+
+📥 Step 3: Clone the latest clean version
+
+```
+git clone https://github.com/HBClab/boost-beh-js.git
+cd boost-beh-js
+```
+
+⸻
+
+🧱 Step 4: Rebuild the Docker image
+
+```
+docker build -t beh .
+```
+
+⸻
+
+▶️ Step 5: Run the container
+
+```
+docker run -p 3000:3000 beh
+```
+
+⸻
+
+🟢 You should now see the app running at:
+🌐 http://localhost:3000
+
+```
 
 ## Usage
 
